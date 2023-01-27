@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgreswriter:
+    image: postgreswriter
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - KAFKA_BROKER_GROUP_ID=123
+      - KAFKA_BROKER_SERVER_URL=kafka
+      - KAFKA_BROKER_PORT=9092
+      - SAINT_CREATION_KAFKA_TOPIC=saint-creation
+      - SAINT_UPDATE_KAFKA_TOPIC=saint-update
+      - SAINT_LAKE_DB_CONNECTION_STRING=jdbc:postgresql://postgres:5432/saint
+      - SAINT_LAKE_DB_USER=user
+      - SAINT_LAKE_DB_PASSWORD=password
+      - SAINT_LAKE_DB_TABLE_NAME=saint_lake
+    ports:
+      - 3069:80
+    platform: linux/amd64
+    restart: always
+
+networks:
+  default:
+    name: local-network
