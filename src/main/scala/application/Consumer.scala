@@ -38,8 +38,9 @@ object Consumer extends App {
 
   val creationTopic: String = System.getenv("SAINT_CREATION_KAFKA_TOPIC")
   val updateTopic: String = System.getenv("SAINT_UPDATE_KAFKA_TOPIC")
+  val deletionTopic: String = System.getenv("SAINT_DELETION_KAFKA_TOPIC")
 
-  val topics = List(creationTopic, updateTopic)
+  val topics = List(creationTopic, updateTopic, deletionTopic)
 
   try {
     consumer.subscribe(topics.asJava)
