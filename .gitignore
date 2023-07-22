@@ -1,14 +1,4 @@
 target
 project
 .env
-/.idea/.name
-/.idea/aws.xml
-/.idea/codeStyles/codeStyleConfig.xml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/codeStyles/Project.xml
-/.idea/modules/saint-loader_1534.iml
-/.idea/modules/saint-loader_1534-build.iml
-/.idea/sbt.xml
-/.idea/scala_compiler.xml
-/.idea/vcs.xml
+.idea
