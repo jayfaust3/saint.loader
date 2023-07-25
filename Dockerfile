@@ -1,22 +1,31 @@
-# Use an SBT image matching the Scala and JDK version.
-FROM hseeberger/scala-sbt:8u265_1.4.2_2.13.3 as builder
+FROM python:3.10.5-slim-buster
 
-# Copy local code to the container image.
+EXPOSE 80
+
+RUN apt-get update
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# UPGRADE pip3
+RUN pip3 install --upgrade pip
+
+# Install pip requirements
+COPY requirements.txt .
+RUN python -m pip install -r requirements.txt
+
 WORKDIR /app
-COPY build.sbt .
-COPY project ./project
-COPY src ./src
+COPY ./src /app
 
-# Build a release artifact.
-RUN sbt assembly
+RUN wget  https://jdbc.postgresql.org/download/postgresql-42.2.5.jar
+RUN mv postgresql-42.2.5.jar /opt/spark/jars
 
-# Use the Official OpenJDK image for a lean production stage of our multi-stage build.
-# https://hub.docker.com/_/openjdk
-# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
-FROM openjdk:8-jre-alpine
+RUN useradd appuser && chown -R appuser /app
+USER appuser
 
-# Copy the jar to the production image from the builder stage.
-COPY --from=builder /app/target/scala-2.13/app-*.jar /app.jar
-
-# Run the web service on container startup.
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+CMD ["python", "__main__.py"]
