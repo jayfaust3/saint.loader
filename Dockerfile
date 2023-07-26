@@ -4,6 +4,8 @@ EXPOSE 80
 
 RUN apt-get update
 
+RUN apt install libpq5
+
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
 
@@ -21,9 +23,6 @@ RUN python -m pip install -r requirements.txt
 
 WORKDIR /app
 COPY ./src /app
-
-RUN wget  https://jdbc.postgresql.org/download/postgresql-42.2.5.jar
-RUN mv postgresql-42.2.5.jar /opt/spark/jars
 
 RUN useradd appuser && chown -R appuser /app
 USER appuser

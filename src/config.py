@@ -12,20 +12,25 @@ settings = {
         }
     },
     'environment': getenv('ENVIRONMENT', 'development'),
-    'sql': {
-        'logging_db': {
-            'host': getenv('LOGGING_DB_HOST'),
-            'port': getenv('LOGGING_DB_PORT'),
-            'database': getenv('LOGGING_DB_DATABASE'),
-            'username': getenv('LOGGING_DB_USERNAME'),
-            'password': getenv('LOGGING_DB_PASSWORD')
+    'kafka': {
+        'broker': {
+            'server_url': getenv('KAFKA_BROKER_SERVER_URL'),
+            'port': getenv('KAFKA_BROKER_PORT'),
+            'group_id': getenv('KAFKA_BROKER_GROUP_ID')
         },
+        'topics': {
+            'saint_creation_topic': getenv('SAINT_CREATION_KAFKA_TOPIC'),
+            'saint_update_topic': getenv('SAINT_UPDATE_KAFKA_TOPIC'),
+            'saint_deletion_topic': getenv('SAINT_DELETION_KAFKA_TOPIC')
+        }
+    },
+    'sql': {
         'data_warehouse': {
-            'host': getenv('DATA_WAREHOUSE_HOST'),
-            'port': getenv('DATA_WAREHOUSE_PORT'),
-            'database': getenv('DATA_WAREHOUSE_DATABASE'),
-            'username': getenv('DATA_WAREHOUSE_USERNAME'),
-            'password': getenv('DATA_WAREHOUSE_PASSWORD')
+            'host': getenv('SAINT_LAKE_DB_HOST'),
+            'port': getenv('SAINT_LAKE_DB_PORT'),
+            'database': getenv('SAINT_LAKE_DB_DATABASE'),
+            'username': getenv('SAINT_LAKE_DB_USER'),
+            'password': getenv('SAINT_LAKE_DB_PASSWORD')
         }
     },
 }
