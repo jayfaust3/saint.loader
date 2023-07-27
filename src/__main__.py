@@ -1,6 +1,6 @@
 from flask import Flask
 from startup import StartUp
-from core.constants.app_metadata import APP_PORT
+from app.core.constants.app_metadata import APP_PORT
 
 
 def main() -> None:

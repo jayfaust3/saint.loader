@@ -1,6 +1,6 @@
 from typing import Union
 from psycopg.connection import Connection, Cursor, ServerCursor
-from ..connection_manager import ConnectionManager
+from app.data_access.data_stores.sql.connection_manager import ConnectionManager
 
 
 class WriteRepository(object):

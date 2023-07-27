@@ -1,7 +1,7 @@
 from typing import Any
 from botocore.client import BaseClient
 from botocore.response import StreamingBody
-from .base import BaseBlobClient
+from app.data_access.data_stores.blob.base import BaseBlobClient
 
 
 class S3Client(BaseBlobClient):

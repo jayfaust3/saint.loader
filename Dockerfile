@@ -4,7 +4,7 @@ EXPOSE 80
 
 RUN apt-get update
 
-RUN apt install libpq5
+RUN apt-get install libpq5 -y
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1

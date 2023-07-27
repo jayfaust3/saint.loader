@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from container import Container
-from core.constants.app_metadata import APP_NAME
+from src import APP_NAME
 
 
 class StartUp(object):
