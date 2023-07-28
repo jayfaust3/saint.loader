@@ -22,10 +22,9 @@ class SaintTransactionConsumer(BaseConsumer):
             if msg is None or not msg:
                 continue
 
-            print(f'Message received: {msg}')
-            # if msg.error():
-            #     print("Consumer error happened: {}".format(msg.error()))
-            #     continue
-            #
-            # print("Connected to Topic: {} and Partition : {}".format(msg.topic(), msg.partition()))
-            # print("Received Message : {} with Offset : {}".format(msg.value().decode('utf-8'), msg.offset()))
+            if msg.error():
+                print("Consumer error happened: {}".format(msg.error()))
+                continue
+
+            print("Connected to Topic: {} and Partition : {}".format(msg.topic(), msg.partition()))
+            print("Received Message : {} with Offset : {}".format(msg.value().decode('utf-8'), msg.offset()))
