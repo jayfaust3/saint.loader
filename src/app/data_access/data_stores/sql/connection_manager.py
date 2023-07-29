@@ -18,4 +18,5 @@ class ConnectionManager(object):
 
     def get_connection(self) -> Connection:
         connection_string: str = f'postgresql://{self.__username}:{self.__password}@{self.__host}:{self.__port}/{self.__database}'
+        print('Connecting with connection string: {}'.format(connection_string))
         return connect(connection_string)

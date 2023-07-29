@@ -26,11 +26,11 @@ settings = {
     },
     'sql': {
         'data_warehouse': {
-            'host': getenv('SAINT_LAKE_DB_HOST'),
-            'port': getenv('SAINT_LAKE_DB_PORT'),
-            'database': getenv('SAINT_LAKE_DB_DATABASE'),
-            'username': getenv('SAINT_LAKE_DB_USER'),
-            'password': getenv('SAINT_LAKE_DB_PASSWORD'),
+            'host': getenv('SAINT_ANALYTICS_DB_HOST'),
+            'port': getenv('SAINT_ANALYTICS_DB_PORT'),
+            'database': getenv('SAINT_ANALYTICS_DB_DATABASE'),
+            'username': getenv('SAINT_ANALYTICS_DB_USER'),
+            'password': getenv('SAINT_ANALYTICS_DB_PASSWORD'),
             'saint_lake_table_name': getenv('SAINT_ANALYTICS_DB_SAINT_LAKE_TABLE_NAME')
         }
     },
