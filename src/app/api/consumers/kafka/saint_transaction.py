@@ -1,5 +1,7 @@
+import json
 from typing import List
 from os import getenv
+from json import loads
 from app.api.consumers.kafka.base import BaseConsumer
 from app.data_access.data_stores.sql.query_handlers.saint_transaction import SaintTransactionQueryHandler
 from app.core.data_models.saint import Saint
@@ -33,44 +35,46 @@ class SaintTransactionConsumer(BaseConsumer):
                 print("Consumer error happened: {}".format(msg.error()))
                 continue
 
-            topic = msg.topic()
-            message_data = msg.value().decode('utf-8')
+            topic: str = msg.topic()
+            message_data_json: str = msg.value().decode('utf-8')
             print('Connected to Topic: {} and Partition : {}'.format(topic, msg.partition()))
-            print('Received Message : {} with Offset : {}'.format(message_data, msg.offset()))
+            print('Received Message : {} with Offset : {}'.format(message_data_json, msg.offset()))
+
+            message_data: dict = loads(message_data_json)
 
             match topic:
                 case self.__saint_creation_topic:
-                     saint = Saint(message_data._id(),
-                                   message_data.createdDate(),
-                                   message_data.modifiedDate(),
-                                   message_data.name(),
-                                   message_data.yearOfBirth(),
-                                   message_data.yearOfDeath(),
-                                   message_data.region(),
-                                   message_data.martyred(),
-                                   message_data.notes(),
-                                   message_data.hasAvatar())
+                     saint = Saint(message_data['_id'],
+                                   message_data['createdDate'],
+                                   message_data['modifiedDate'],
+                                   message_data['name'],
+                                   message_data['yearOfBirth'],
+                                   message_data['yearOfDeath'],
+                                   message_data['region'],
+                                   message_data['martyred'],
+                                   message_data['notes'],
+                                   message_data['hasAvatar'])
 
                      self.__saint_transaction_query_handler.handle_create_and_update(saint)
 
                 case self.__saint_update_topic:
-                     saint = Saint(message_data._id(),
-                                   message_data.createdDate(),
-                                   message_data.modifiedDate(),
-                                   message_data.name(),
-                                   message_data.yearOfBirth(),
-                                   message_data.yearOfDeath(),
-                                   message_data.region(),
-                                   message_data.martyred(),
-                                   message_data.notes(),
-                                   message_data.hasAvatar())
+                     saint = Saint(message_data['_id'],
+                                   message_data['createdDate'],
+                                   message_data['modifiedDate'],
+                                   message_data['name'],
+                                   message_data['yearOfBirth'],
+                                   message_data['yearOfDeath'],
+                                   message_data['region'],
+                                   message_data['martyred'],
+                                   message_data['notes'],
+                                   message_data['hasAvatar'])
 
                      self.__saint_transaction_query_handler.handle_create_and_update(saint)
 
-                case self.__saint_transaction_query_handler:
-                     saint_id: str = message_data.id()
+                case self.__saint_deletion_topic:
+                     saint_id: str = message_data['id']
 
                      self.__saint_transaction_query_handler.handle_delete(saint_id)
 
                 case _:
-                    raise Exception('{} is not a supported topic'.format())
+                    raise Exception('{} is not a supported topic'.format(topic))
