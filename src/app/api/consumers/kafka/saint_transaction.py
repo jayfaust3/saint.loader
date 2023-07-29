@@ -1,6 +1,7 @@
 from typing import List
-from json import dumps, loads
 from app.api.consumers.kafka.base import BaseConsumer
+from app.data_access.data_stores.sql.query_handlers.saint_transaction import SaintTransactionQueryHandler
+from app.core.data_models.saint import Saint
 
 
 class SaintTransactionConsumer(BaseConsumer):
@@ -8,12 +9,14 @@ class SaintTransactionConsumer(BaseConsumer):
     def __init__(self,
                  broker_host: str,
                  broker_group_id: str,
-                 topics: List[str]) -> None:
+                 topics: List[str],
+                 saint_transaction_query_handler: SaintTransactionQueryHandler) -> None:
         super().__init__(
             broker_host,
             broker_group_id,
             topics
         )
+        self.__saint_transaction_query_handler: SaintTransactionQueryHandler = saint_transaction_query_handler
 
     def consume(self) -> None:
         while True:

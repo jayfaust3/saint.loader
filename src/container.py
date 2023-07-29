@@ -4,6 +4,7 @@ from dependency_injector.providers import Configuration, Singleton
 # from boto3 import client
 from app.data_access.data_stores.sql.connection_manager import ConnectionManager
 from app.data_access.data_stores.sql.repositories.write import WriteRepository
+from app.data_access.data_stores.sql.query_handlers.saint_transaction import SaintTransactionQueryHandler
 # from app.data_access.data_stores.blob.s3 import S3Client
 from app.api.consumers.kafka.saint_transaction import SaintTransactionConsumer
 from app.core.utilities.startup_utils import initiate_consumers
@@ -29,6 +30,10 @@ class Container(DeclarativeContainer):
                                                     password=__config.sql.data_warehouse.password())
 
     __data_warehouse_write_repository = Singleton(WriteRepository, connection_manager=__data_warehouse_connection_manager)
+
+    __saint_transaction_query_handler = Singleton(SaintTransactionConsumer,
+                                                  saint_lake_table_name=__config.sql.data_warehouse.saint_lake_table_name(),
+                                                  write_repository=__data_warehouse_write_repository)
     # data access
 
     # blob
@@ -48,7 +53,8 @@ class Container(DeclarativeContainer):
                                                  __config.kafka.topics.saint_creation_topic(),
                                                  __config.kafka.topics.saint_update_topic(),
                                                  __config.kafka.topics.saint_deletion_topic()
-                                             ])
+                                             ],
+                                             saint_transaction_query_handler=__saint_transaction_query_handler)
     # api
 
     # initialization
