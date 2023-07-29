@@ -61,8 +61,8 @@ SAINT_DELETE_QUERY: str = '''
         SELECT
             id,
             created_date,
-            modified_date,
-            FALSE as active,
+            NOW()::timestamp AS modified_date,
+            FALSE AS active,
             name,
             year_of_birth,
             year_of_death,
@@ -72,6 +72,7 @@ SAINT_DELETE_QUERY: str = '''
             has_avatar,
             ROW_NUMBER() OVER(PARTITION BY id ORDER BY system_id DESC) as recency
         FROM saint_lake
+        WHERE id = {saint_id}
     ) AS grouped
     WHERE
         grouped.recency = 1
