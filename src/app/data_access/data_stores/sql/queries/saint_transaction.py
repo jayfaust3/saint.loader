@@ -44,11 +44,11 @@ SAINT_DELETE_QUERY: str = '''
         notes,
         has_avatar
     )
-    SELECT TOP 1
+    SELECT
         id,
         created_date,
         modified_date,
-        FALSE,
+        active,
         name,
         year_of_birth,
         year_of_death,
@@ -56,7 +56,23 @@ SAINT_DELETE_QUERY: str = '''
         martyred,
         notes,
         has_avatar
-        over (PARTITION BY system_id)
-    FROM {saint_lake}
-    ORDER BY system_id DESC
+    FROM
+    (
+        SELECT
+            id,
+            created_date,
+            modified_date,
+            FALSE as active,
+            name,
+            year_of_birth,
+            year_of_death,
+            region,
+            martyred,
+            notes,
+            has_avatar,
+            ROW_NUMBER() OVER(PARTITION BY id ORDER BY system_id DESC) as recency
+        FROM saint_lake
+    ) AS grouped
+    WHERE
+        grouped.recency = 1
 '''
