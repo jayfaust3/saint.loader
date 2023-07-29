@@ -31,7 +31,7 @@ class Container(DeclarativeContainer):
 
     __data_warehouse_write_repository = Singleton(WriteRepository, connection_manager=__data_warehouse_connection_manager)
 
-    __saint_transaction_query_handler = Singleton(SaintTransactionConsumer,
+    __saint_transaction_query_handler = Singleton(SaintTransactionQueryHandler,
                                                   saint_lake_table_name=__config.sql.data_warehouse.saint_lake_table_name(),
                                                   write_repository=__data_warehouse_write_repository)
     # data access
