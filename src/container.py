@@ -23,11 +23,7 @@ class Container(DeclarativeContainer):
 
     # data access
     __data_warehouse_connection_manager = Singleton(ConnectionManager,
-                                                    host=__config.sql.data_warehouse.host(),
-                                                    port=__config.sql.data_warehouse.port(),
-                                                    database=__config.sql.data_warehouse.database(),
-                                                    username=__config.sql.data_warehouse.username(),
-                                                    password=__config.sql.data_warehouse.password())
+                                                    connection_string=__config.sql.data_warehouse.connection_string())
 
     __data_warehouse_write_repository = Singleton(WriteRepository, connection_manager=__data_warehouse_connection_manager)
 

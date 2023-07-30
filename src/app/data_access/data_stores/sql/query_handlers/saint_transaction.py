@@ -26,4 +26,4 @@ class SaintTransactionQueryHandler(object):
 
     def handle_delete(self, saint_id: str) -> None:
         self.__write_repository.write(SAINT_DELETE_QUERY.format(saint_lake=self.__saint_lake_table_name,
-                                      saint_id=saint_id))
+                                                                saint_id=saint_id))
