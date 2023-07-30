@@ -9,6 +9,7 @@ class WriteRepository(object):
         self.__connection_manager: ConnectionManager = connection_manager
 
     def write(self, sql: str) -> None:
+        print(f'Executing statement: {sql}')
         connection: Connection = self.__connection_manager.get_connection()
 
         cursor: Union[Cursor, ServerCursor] = connection.cursor()

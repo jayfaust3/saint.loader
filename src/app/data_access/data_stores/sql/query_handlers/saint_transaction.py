@@ -12,8 +12,10 @@ class SaintTransactionQueryHandler(object):
         self.__write_repository: WriteRepository = write_repository
 
     def handle_create_and_update(self, saint: Saint) -> None:
+        saint_id: str = saint.id
+        formatted_saint_id: str = ''.join(saint_id)
         self.__write_repository.write(SAINT_CREATE_AND_UPDATE_QUERY.format(saint_lake=self.__saint_lake_table_name,
-                                                                           id=saint.id,
+                                                                           id=formatted_saint_id,
                                                                            created_date=saint.created_date,
                                                                            modified_date=saint.modified_date,
                                                                            name=saint.name,

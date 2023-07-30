@@ -15,16 +15,16 @@ SAINT_CREATE_AND_UPDATE_QUERY: str = '''
     )
     VALUES
     (
-        {id},
+        '{id}',
         {created_date},
         {modified_date},
-        TRUE
-        {name},
+        TRUE,
+        '{name}',
         {year_of_birth},
         {year_of_death},
-        {region},
+        '{region}',
         {martyred},
-        {notes},
+        '{notes}',
         {has_avatar}
     )
 '''
@@ -61,7 +61,7 @@ SAINT_DELETE_QUERY: str = '''
         SELECT
             id,
             created_date,
-            NOW()::timestamp AS modified_date,
+            extract(epoch from now()) AS modified_date,
             FALSE AS active,
             name,
             year_of_birth,
@@ -72,7 +72,7 @@ SAINT_DELETE_QUERY: str = '''
             has_avatar,
             ROW_NUMBER() OVER(PARTITION BY id ORDER BY system_id DESC) as recency
         FROM saint_lake
-        WHERE id = {saint_id}
+        WHERE id = '{saint_id}'
     ) AS grouped
     WHERE
         grouped.recency = 1

@@ -1,4 +1,3 @@
-import json
 from typing import List
 from os import getenv
 from json import loads
@@ -37,44 +36,25 @@ class SaintTransactionConsumer(BaseConsumer):
 
             topic: str = msg.topic()
             message_data_json: str = msg.value().decode('utf-8')
-            print('Connected to Topic: {} and Partition : {}'.format(topic, msg.partition()))
-            print('Received Message : {} with Offset : {}'.format(message_data_json, msg.offset()))
 
             message_data: dict = loads(message_data_json)
 
-            match topic:
-                case self.__saint_creation_topic:
-                     saint = Saint(message_data['_id'],
-                                   message_data['createdDate'],
-                                   message_data['modifiedDate'],
-                                   message_data['name'],
-                                   message_data['yearOfBirth'],
-                                   message_data['yearOfDeath'],
-                                   message_data['region'],
-                                   message_data['martyred'],
-                                   message_data['notes'],
-                                   message_data['hasAvatar'])
+            if topic == self.__saint_creation_topic or topic == self.__saint_update_topic:
+                saint = Saint(message_data.get('_id'),
+                              message_data.get('createdDate'),
+                              message_data.get('modifiedDate'),
+                              message_data.get('name'),
+                              message_data.get('yearOfBirth'),
+                              message_data.get('yearOfDeath'),
+                              message_data.get('region'),
+                              message_data.get('martyred'),
+                              message_data.get('notes'),
+                              message_data.get('hasAvatar'))
 
-                     self.__saint_transaction_query_handler.handle_create_and_update(saint)
+                self.__saint_transaction_query_handler.handle_create_and_update(saint)
+            elif topic == self.__saint_deletion_topic:
+                saint_id: str = message_data.get('id')
 
-                case self.__saint_update_topic:
-                     saint = Saint(message_data['_id'],
-                                   message_data['createdDate'],
-                                   message_data['modifiedDate'],
-                                   message_data['name'],
-                                   message_data['yearOfBirth'],
-                                   message_data['yearOfDeath'],
-                                   message_data['region'],
-                                   message_data['martyred'],
-                                   message_data['notes'],
-                                   message_data['hasAvatar'])
-
-                     self.__saint_transaction_query_handler.handle_create_and_update(saint)
-
-                case self.__saint_deletion_topic:
-                     saint_id: str = message_data['id']
-
-                     self.__saint_transaction_query_handler.handle_delete(saint_id)
-
-                case _:
-                    raise Exception('{} is not a supported topic'.format(topic))
+                self.__saint_transaction_query_handler.handle_delete(saint_id)
+            else:
+                raise Exception(f'{topic} is not a supported topic')
