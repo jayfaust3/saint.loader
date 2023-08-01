@@ -9,5 +9,5 @@ def main() -> None:
     app.run(port=APP_PORT)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
