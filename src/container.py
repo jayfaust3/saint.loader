@@ -1,11 +1,9 @@
 from config import settings
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Configuration, Singleton
-# from boto3 import client
 from app.data_access.data_stores.sql.connection_manager import ConnectionManager
 from app.data_access.data_stores.sql.repositories.write import WriteRepository
 from app.data_access.data_stores.sql.query_handlers.saint_transaction import SaintTransactionQueryHandler
-# from app.data_access.data_stores.blob.s3 import S3Client
 from app.api.consumers.kafka.saint_transaction import SaintTransactionConsumer
 from app.core.utilities.startup_utils import initiate_consumers
 
